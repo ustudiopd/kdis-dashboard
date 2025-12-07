@@ -1,0 +1,41 @@
+[
+    {
+        "name": "김철수",
+        "dept": "교학팀",
+        "expertise": [
+            "학사관리",
+            "LMS"
+        ],
+        "interests": [
+            "생성형AI",
+            "독서"
+        ],
+        "email": "cs_kim@kdis.ac.kr"
+    },
+    {
+        "name": "이영희",
+        "dept": "대외협력팀",
+        "expertise": [
+            "국제행사",
+            "통역"
+        ],
+        "interests": [
+            "여행",
+            "영어"
+        ],
+        "email": "yh_lee@kdis.ac.kr"
+    },
+    {
+        "name": "박지민",
+        "dept": "기획팀",
+        "expertise": [
+            "예산",
+            "성과관리"
+        ],
+        "interests": [
+            "데이터분석",
+            "테니스"
+        ],
+        "email": "jm_park@kdis.ac.kr"
+    }
+]

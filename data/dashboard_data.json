@@ -1,0 +1,46 @@
+{
+    "kpi": {
+        "total_students": 320,
+        "partners": 45,
+        "employment_rate": 92.5
+    },
+    "students_by_region": [
+        {
+            "region": "Asia",
+            "count": 150
+        },
+        {
+            "region": "Africa",
+            "count": 80
+        },
+        {
+            "region": "Europe",
+            "count": 40
+        },
+        {
+            "region": "Americas",
+            "count": 30
+        },
+        {
+            "region": "Others",
+            "count": 20
+        }
+    ],
+    "mou_partners": [
+        {
+            "name": "World Bank",
+            "country": "USA",
+            "year": 2023
+        },
+        {
+            "name": "ADB",
+            "country": "Philippines",
+            "year": 2022
+        },
+        {
+            "name": "KOICA",
+            "country": "Korea",
+            "year": 2021
+        }
+    ]
+}

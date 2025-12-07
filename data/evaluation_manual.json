@@ -1,0 +1,14 @@
+[
+    {
+        "category": "교육과정",
+        "criteria": "전임교원 확보율",
+        "guide": "전년도 대비 5% 상승 목표 필요",
+        "prev_feedback": "교원 다양성 부족 지적"
+    },
+    {
+        "category": "학생지원",
+        "criteria": "장학금 지급률",
+        "guide": "지급 기준의 투명성 확보 문서화 필요",
+        "prev_feedback": "규정 명문화 미흡"
+    }
+]

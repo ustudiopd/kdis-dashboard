@@ -1,0 +1,16 @@
+[
+    {
+        "name": "John Doe",
+        "org": "World Bank",
+        "position": "Senior Specialist",
+        "contact": "john@wb.org",
+        "history": "2023 입학설명회 참석"
+    },
+    {
+        "name": "Jane Smith",
+        "org": "UNESCO",
+        "position": "Director",
+        "contact": "jane@unesco.org",
+        "history": "2024 공동 세미나 논의 중"
+    }
+]

@@ -1,0 +1,46 @@
+[
+    {
+        "date": "2025-12-08",
+        "department": "교학팀",
+        "summary": "2025-12-08 주간 업무 보고입니다. 주요 행사 및 일정 공유드립니다.",
+        "issues": [
+            "행사장 예약 중복 가능성 있음",
+            "예산 승인 지연 우려"
+        ],
+        "link": "https://kdischool.ac.kr/report/2025-12-08"
+    },
+    {
+        "date": "2025-12-01",
+        "department": "교학팀",
+        "summary": "2025-12-01 주간 업무 보고입니다. 주요 행사 및 일정 공유드립니다.",
+        "issues": [],
+        "link": "https://kdischool.ac.kr/report/2025-12-01"
+    },
+    {
+        "date": "2025-11-24",
+        "department": "총무팀",
+        "summary": "2025-11-24 주간 업무 보고입니다. 주요 행사 및 일정 공유드립니다.",
+        "issues": [
+            "행사장 예약 중복 가능성 있음",
+            "예산 승인 지연 우려"
+        ],
+        "link": "https://kdischool.ac.kr/report/2025-11-24"
+    },
+    {
+        "date": "2025-11-17",
+        "department": "교학팀",
+        "summary": "2025-11-17 주간 업무 보고입니다. 주요 행사 및 일정 공유드립니다.",
+        "issues": [],
+        "link": "https://kdischool.ac.kr/report/2025-11-17"
+    },
+    {
+        "date": "2025-11-10",
+        "department": "기획팀",
+        "summary": "2025-11-10 주간 업무 보고입니다. 주요 행사 및 일정 공유드립니다.",
+        "issues": [
+            "행사장 예약 중복 가능성 있음",
+            "예산 승인 지연 우려"
+        ],
+        "link": "https://kdischool.ac.kr/report/2025-11-10"
+    }
+]
