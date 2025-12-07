@@ -1,0 +1,211 @@
+이미지에서 추출한 **KDI 대학원(KDI School)의 브랜드 아이덴티티**를 분석하고, 이를 Tailwind CSS 기반의 대시보드 테마로 변환해 드리겠습니다.
+
+기존의 일반적인 파란색(Navy) 톤을 버리고, 이미지 속의 **Deep Green**과 **Charcoal Grey**를 메인으로 사용하여 **"공식적이고 신뢰감 있는(Official & Trustworthy)"** 스타일로 변경합니다.
+
+-----
+
+### 🎨 1. KDI School 브랜드 컬러 분석 (Color Extraction)
+
+이미지에서 스포이드로 추출한 핵심 색상 팔레트입니다.
+
+  * **KDI Forest Green (Primary)**: `#155e34` (상단 메뉴바의 짙은 녹색) - **신뢰, 성장, 교육**
+  * **KDI Bright Green (Accent)**: `#2ecc71` (텍스트 하이라이트용 밝은 녹색) - **혁신, 미래**
+  * **Official Charcoal (Secondary)**: `#1f2937` (어두운 회색/검정 톤) - **전문성, 무게감**
+  * **Background**: `#f8fafc` (아주 연한 회색) - **깨끗함, 가독성**
+
+-----
+
+### 🏛️ 2. 디자인 적용 전략
+
+1.  **헤더 디자인**: 이미지 속 상단 바(Bar)의 느낌을 살려, 페이지 제목 부분에 **짙은 녹색 라인**을 적용합니다.
+2.  **카드 UI**: 카드 상단에 \*\*녹색 보더(Border-top)\*\*를 두어 통일감을 줍니다.
+3.  **폰트**: 가독성이 높은 **Pretendard**를 유지하되, 제목 색상을 KDI Charcoal로 지정합니다.
+4.  **버튼**: Streamlit의 기본 빨간색/주황색 버튼을 **KDI Green**으로 강제 변경합니다.
+
+-----
+
+### 💻 3. `utils/style.py` 업데이트 코드
+
+기존 `utils/style.py` 파일의 내용을 아래 코드로 **전체 교체**해 주세요.
+
+```python
+import streamlit as st
+
+def load_css():
+    """
+    KDI 대학원 브랜드 컬러(Green & Charcoal)가 적용된 Tailwind CSS 스타일을 주입합니다.
+    """
+    # KDI 브랜드 컬러 정의
+    KDI_GREEN = "#155e34"       # 메인 짙은 녹색
+    KDI_ACCENT = "#2ecc71"      # 포인트 밝은 녹색
+    KDI_DARK = "#1f2937"        # 본문/제목 다크 그레이
+    BG_COLOR = "#f8fafc"        # 배경색
+
+    st.markdown(f"""
+        <script src="https://cdn.tailwindcss.com"></script>
+        
+        <style>
+            /* 1. 폰트 및 기본 배경 설정 */
+            @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+            
+            html, body, [class*="css"] {{
+                font-family: 'Pretendard', -apple-system, system-ui, sans-serif !important;
+            }}
+            
+            .stApp {{
+                background-color: {BG_COLOR}; 
+            }}
+
+            /* 2. Streamlit 기본 요소 오버라이딩 */
+            /* 상단 헤더 숨김 */
+            header[data-testid="stHeader"] {{
+                visibility: hidden;
+            }}
+            
+            /* 사이드바 스타일 */
+            section[data-testid="stSidebar"] {{
+                background-color: #ffffff;
+                border-right: 1px solid #e5e7eb;
+            }}
+            
+            /* 버튼 스타일 (KDI Green 적용) */
+            div.stButton > button {{
+                background-color: {KDI_GREEN} !important;
+                color: white !important;
+                border: none !important;
+                border-radius: 6px !important;
+                padding: 0.5rem 1rem !important;
+                transition: all 0.2s !important;
+            }}
+            div.stButton > button:hover {{
+                background-color: #14532d !important; /* 더 짙은 녹색 */
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }}
+
+            /* 3. 커스텀 컴포넌트 스타일 */
+            
+            /* KDI 카드: 상단에 녹색 포인트 라인 추가 */
+            .kdi-card {{
+                background-color: white;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+                border: 1px solid #f1f5f9;
+                border-top: 4px solid {KDI_GREEN}; /* 핵심 포인트 */
+                height: 100%;
+                transition: all 0.2s ease-in-out;
+            }}
+            .kdi-card:hover {{
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }}
+            
+            .kdi-header {{
+                color: {KDI_GREEN};
+                font-weight: 800;
+                letter-spacing: -0.025em;
+            }}
+            
+            .kdi-subtext {{
+                color: #64748b;
+            }}
+
+            /* 메트릭 숫자 강조 */
+            .metric-value {{
+                color: {KDI_DARK};
+                font-feature-settings: "tnum";
+            }}
+        </style>
+    """, unsafe_allow_html=True)
+
+def card_metric(label, value, diff=None, icon="📊", color="text-green-700"):
+    """
+    KDI 테마가 적용된 메트릭 카드
+    """
+    diff_html = ""
+    if diff:
+        # 상승/하락에 따른 색상 (녹색/빨간색 대신 중립적인 톤이나 브랜드톤 유지)
+        is_pos = "+" in str(diff)
+        diff_color = "text-emerald-600 bg-emerald-50" if is_pos else "text-rose-600 bg-rose-50"
+        diff_icon = "▲" if is_pos else "▼"
+        diff_html = f'''
+        <span class="text-xs font-bold {diff_color} px-2 py-1 rounded-full ml-2 flex items-center gap-1">
+            {diff_icon} {diff}
+        </span>
+        '''
+        
+    return f"""
+    <div class="kdi-card flex flex-col justify-between">
+        <div>
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider">{label}</span>
+                <span class="text-xl p-2 bg-slate-100 rounded-lg {color}">{icon}</span>
+            </div>
+            <div class="flex items-baseline mt-1">
+                <span class="text-3xl font-bold text-slate-900 tracking-tight metric-value">{value}</span>
+                {diff_html}
+            </div>
+        </div>
+    </div>
+    """
+
+def page_header(title, subtitle):
+    """
+    KDI 홈페이지 헤더 스타일을 차용한 페이지 타이틀
+    """
+    st.markdown(f"""
+    <div class="mb-8 bg-white p-6 rounded-lg border-l-4 border-[#155e34] shadow-sm">
+        <h1 class="text-3xl font-extrabold text-[#1f2937] tracking-tight">{title}</h1>
+        <p class="text-slate-500 mt-2 text-lg font-medium">{subtitle}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+def badge(text, color="bg-green-100 text-green-800"):
+    return f'<span class="px-2.5 py-0.5 rounded-full text-xs font-medium {color}">{text}</span>'
+```
+
+-----
+
+### 🚀 4. 메인 페이지(`main.py`) 예시 수정
+
+이제 `main.py`에서 바뀐 스타일 함수들을 호출하면, 녹색 테마가 즉시 적용됩니다.
+
+```python
+import streamlit as st
+from utils.style import load_css, page_header, card_metric
+
+# 1. 설정
+st.set_page_config(page_title="KDIS 스마트 행정 플랫폼", page_icon="🏛️", layout="wide")
+
+# 2. 스타일 로드 (KDI Green 테마)
+load_css()
+
+# 3. 헤더 (KDI 홈페이지 느낌)
+page_header(
+    title="KDI School Smart Platform", 
+    subtitle="데이터 기반의 스마트한 의사결정 지원 시스템"
+)
+
+# 4. KPI 카드 (녹색 아이콘 포인트)
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.markdown(card_metric("총 재학생", "320명", "+5%", "👨‍🎓", "text-[#155e34]"), unsafe_allow_html=True)
+with col2:
+    st.markdown(card_metric("글로벌 파트너", "45개국", "+2", "🌍", "text-blue-600"), unsafe_allow_html=True)
+with col3:
+    st.markdown(card_metric("취업률", "94.2%", "+1.5%", "📈", "text-emerald-600"), unsafe_allow_html=True)
+with col4:
+    st.markdown(card_metric("오늘의 일정", "3건", None, "📅", "text-slate-600"), unsafe_allow_html=True)
+
+# ... (나머지 카드 코드 유지) ...
+```
+
+### ✅ 변경 사항 요약
+
+  * **색상:** 기존 `Navy Blue` → **`KDI Forest Green (#155e34)`** 으로 변경하여 공식 홈페이지와 톤앤매너를 일치시켰습니다.
+  * **카드:** 모든 카드 상단에 굵은 녹색 선(`border-top`)을 추가하여 KDI 문서 서식 같은 느낌을 주었습니다.
+  * **헤더:** 페이지 제목 옆에 녹색 수직 바를 추가하여 깔끔하고 정돈된 인상을 줍니다.
+
+이제 실행해 보시면, 마치 KDI 공식 인트라넷 시스템에 접속한 듯한 느낌을 받으실 수 있습니다.
