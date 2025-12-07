@@ -76,7 +76,18 @@ def load_data(filename: str) -> Optional[Dict[str, Any]]:
                     data = json.loads(content)
                     return data
                 except GithubException as e:
-                    if attempt < MAX_RETRIES - 1:
+                    # 401 인증 오류 처리
+                    if e.status == 401:
+                        st.error("❌ GitHub 인증 오류: 토큰이 만료되었거나 유효하지 않습니다.")
+                        st.info("""
+                        **해결 방법:**
+                        1. GitHub → Settings → Developer settings → Personal access tokens
+                        2. 새 토큰 생성 (repo 권한)
+                        3. `.streamlit/secrets.toml` 파일의 `GITHUB_TOKEN` 값을 업데이트
+                        4. 앱을 재시작하세요
+                        """)
+                        break
+                    elif attempt < MAX_RETRIES - 1:
                         time.sleep(1)  # 1초 대기 후 재시도
                         continue
                     else:
@@ -85,6 +96,19 @@ def load_data(filename: str) -> Optional[Dict[str, Any]]:
                 except json.JSONDecodeError as e:
                     st.error(f"❌ JSON 파싱 오류 ({filename}): {e}")
                     return _load_from_local(filename)
+        except GithubException as e:
+            # 최상위 레벨 인증 오류 처리
+            if e.status == 401:
+                st.error("❌ GitHub 인증 오류: 토큰이 만료되었거나 유효하지 않습니다.")
+                st.info("""
+                **해결 방법:**
+                1. GitHub → Settings → Developer settings → Personal access tokens
+                2. 새 토큰 생성 (repo 권한)
+                3. `.streamlit/secrets.toml` 파일의 `GITHUB_TOKEN` 값을 업데이트
+                4. 앱을 재시작하세요
+                """)
+            else:
+                st.warning(f"⚠️ GitHub 연동 오류: {e}. 로컬 데이터를 사용합니다.")
         except Exception as e:
             st.warning(f"⚠️ GitHub 연동 오류: {e}. 로컬 데이터를 사용합니다.")
     
@@ -175,7 +199,18 @@ def save_data(filename: str, json_content: Dict[str, Any]) -> bool:
                 return True
                 
             except GithubException as e:
-                if attempt < MAX_RETRIES - 1:
+                # 401 인증 오류 처리
+                if e.status == 401:
+                    st.error("❌ GitHub 인증 오류: 토큰이 만료되었거나 유효하지 않습니다.")
+                    st.info("""
+                    **해결 방법:**
+                    1. GitHub → Settings → Developer settings → Personal access tokens
+                    2. 새 토큰 생성 (repo 권한)
+                    3. `.streamlit/secrets.toml` 파일의 `GITHUB_TOKEN` 값을 업데이트
+                    4. 앱을 재시작하세요
+                    """)
+                    return False
+                elif attempt < MAX_RETRIES - 1:
                     time.sleep(1)
                     continue
                 else:
@@ -185,6 +220,20 @@ def save_data(filename: str, json_content: Dict[str, Any]) -> bool:
                 st.error(f"❌ 저장 중 오류 발생 ({filename}): {e}")
                 return False
                 
+    except GithubException as e:
+        # 최상위 레벨 인증 오류 처리
+        if e.status == 401:
+            st.error("❌ GitHub 인증 오류: 토큰이 만료되었거나 유효하지 않습니다.")
+            st.info("""
+            **해결 방법:**
+            1. GitHub → Settings → Developer settings → Personal access tokens
+            2. 새 토큰 생성 (repo 권한)
+            3. `.streamlit/secrets.toml` 파일의 `GITHUB_TOKEN` 값을 업데이트
+            4. 앱을 재시작하세요
+            """)
+        else:
+            st.error(f"❌ GitHub 연동 오류: {e}")
+        return False
     except Exception as e:
         st.error(f"❌ GitHub 연동 오류: {e}")
         return False
